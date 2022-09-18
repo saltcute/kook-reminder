@@ -1,29 +1,35 @@
 {
-  "name": "kbotify-template",
-  "version": "0.0.1",
-  "description": "Starter kit for kBotify bots",
+  "name": "kook-reminder",
+  "version": "0.1.0",
+  "description": "提醒○○小助手",
   "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --nolazy -r ts-node/register -r tsconfig-paths/register src/index.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fi6/kbotify-template.git"
+    "url": "git+https://github.com/potatopotat0/kook-reminder.git"
   },
   "keywords": [
     "kbotify",
     "kaiheila",
+    "kook",
     "bot"
   ],
-  "author": "FlappyIce",
+  "author": "potatopotat0",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fi6/kbotify-template/issues"
+    "url": "https://github.com/potatopotat0/kook-reminder/issues"
   },
-  "homepage": "https://github.com/fi6/kbotify-template#readme",
+  "homepage": "https://github.com/potatopotat0/kook-reminder#readme",
   "dependencies": {
-    "kbotify": "^0.2.5"
+    "@types/node-schedule": "^2.1.0",
+    "axios": "^0.27.2",
+    "got": "^11.8.5",
+    "kbotify": "^0.2.5",
+    "node-schedule": "^2.1.0",
+    "ts-config": "^20.10.0",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.28.4",
