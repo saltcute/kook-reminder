@@ -11,6 +11,7 @@ bot.logger.addStream({
     stream: process.stdout
 })
 
+reminder.loadChannelList();
 schedule.scheduleJob("0 * * * *", () => {
     axios({
         url: "http://reminder.lolicon.ac.cn/random",
