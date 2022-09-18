@@ -7,7 +7,7 @@ import * as reminder from './commands/reminder/reminderChannelList'
 
 bot.logger.addStream({
     name: "kook-reminder",
-    level: bot.logger.INFO,
+    level: 30,
     stream: process.stdout
 })
 

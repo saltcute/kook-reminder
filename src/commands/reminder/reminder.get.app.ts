@@ -13,7 +13,7 @@ class ReminderGet extends AppCommand {
             url: "http://reminder.lolicon.ac.cn/random",
             method: "GET"
         }).then((res) => {
-            bot.logger.INFO(`Sent ${res.data} to ${session.user.username}#${session.user.identifyNum} (${session.userId}) in ${session.guildId}/${session.channel.id}`);
+            bot.logger.info(`Sent ${res.data} to ${session.user.username}#${session.user.identifyNum} (${session.userId}) in ${session.guildId}/${session.channel.id}`);
             session.client.API.asset.create(got.stream(`http://reminder.lolicon.ac.cn/image?img=${res.data}`), {
                 filename: res.data,
                 contentType: "image/png"

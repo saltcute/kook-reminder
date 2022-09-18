@@ -11,7 +11,7 @@ class ReminderRemove extends AppCommand {
         if (session.guild) {
             reminder.addChannel(session.channel.id);
             session.reply(`已添加频道「${session.channel.name}」(${session.channel.id})到提醒列表中`);
-            bot.logger.INFO(`Removed ${session.channel.id} from reminding list by ${session.user.username}#${session.user.identifyNum} (${session.userId})`);
+            bot.logger.info(`Removed ${session.channel.id} from reminding list by ${session.user.username}#${session.user.identifyNum} (${session.userId})`);
         } else {
             session.client.API.directMessage.create(9, session.userId, undefined, "不能从私聊移除提醒", session.msg.msgId);
         }
