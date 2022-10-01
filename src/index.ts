@@ -26,7 +26,13 @@ schedule.scheduleJob("0 * * * *", () => {
         }).then((res) => {
             reminder.channelList.forEach((val, key) => {
                 if (val) {
-                    bot.API.message.create(2, key, res.url);
+                    bot.API.message.create(2, key, res.url).catch((e) => {
+                        bot.logger.error(`Sending hourly image to ${key} failed`);
+                        bot.logger.error(e);
+                        if (e.message == "guild_id不存在或者你没有权限操作") {
+                            reminder.deleteChannel(key);
+                        }
+                    });
                 }
             })
         }).catch((e) => {
