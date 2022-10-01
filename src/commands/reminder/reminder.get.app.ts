@@ -23,7 +23,13 @@ class ReminderGet extends AppCommand {
                 } else {
                     session.client.API.directMessage.create(2, session.userId, undefined, res.url, session.msg.msgId);
                 }
+            }).catch((e) => {
+                bot.logger.error("Uploading image failed");
+                bot.logger.error(e);
             })
+        }).catch((e) => {
+            bot.logger.error("Fetching random image failed");
+            bot.logger.error(e);
         })
     };
 }

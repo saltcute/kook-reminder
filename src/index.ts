@@ -18,8 +18,9 @@ schedule.scheduleJob("0 * * * *", () => {
         url: "http://reminder.lolicon.ac.cn/hourly",
         method: "GET"
     }).then((res) => {
-        console.log(res.data);
-        bot.API.asset.create(got.stream(`http://reminder.lolicon.ac.cn/image?img=${res.data}`), {
+        bot.logger.info(`Hourly reminder: ${res.data}`)
+        const stream = got.stream(`http://reminder.lolicon.ac.cn/image?img=${res.data}`);
+        bot.API.asset.create(stream, {
             filename: res.data,
             contentType: "image/png"
         }).then((res) => {
@@ -28,7 +29,13 @@ schedule.scheduleJob("0 * * * *", () => {
                     bot.API.message.create(2, key, res.url);
                 }
             })
+        }).catch((e) => {
+            bot.logger.error("Uploading image failed");
+            bot.logger.error(e);
         })
+    }).catch((e) => {
+        bot.logger.error("Fetching hourly image failed");
+        bot.logger.error(e);
     })
 })
 
