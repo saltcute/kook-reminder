@@ -29,7 +29,8 @@ schedule.scheduleJob("0 * * * *", () => {
                     bot.API.message.create(2, key, res.url).catch((e) => {
                         bot.logger.error(`Sending hourly image to ${key} failed`);
                         bot.logger.error(e);
-                        if (e.message == "guild_id不存在或者你没有权限操作") {
+                        bot.logger.error(e.message)
+                        if (e.message == "Request failed with status code 403") {
                             reminder.deleteChannel(key);
                         }
                     });

@@ -9,7 +9,7 @@ class ReminderRemove extends AppCommand {
     intro = '';
     func: AppFunc<BaseSession> = async (session) => {
         if (session.guild) {
-            reminder.addChannel(session.channel.id);
+            reminder.deleteChannel(session.channel.id);
             session.reply(`已将频道「${session.channel.name}」(${session.channel.id})从提醒列表中移除`);
             bot.logger.info(`Removed ${session.channel.id} from reminding list by ${session.user.username}#${session.user.identifyNum} (${session.userId})`);
         } else {
