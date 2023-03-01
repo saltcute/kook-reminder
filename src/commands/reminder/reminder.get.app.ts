@@ -1,28 +1,21 @@
-import { AppCommand, AppFunc, BaseSession } from 'kbotify';
+import { BaseCommand, CommandFunction, BaseSession } from 'kasumi.js';
 import axios from 'axios';
-import got from 'got';
 import { bot } from 'init/client';
-
-class ReminderGet extends AppCommand {
-    code = 'get'; // 只是用作标记
-    trigger = 'get'; // 用于触发的文字
-    help = '`.reminder get`'; // 帮助文字
-    intro = '';
-    func: AppFunc<BaseSession> = async (session) => {
+import { MessageType } from 'kasumi.js/dist/type';
+class ReminderGet extends BaseCommand {
+    name = 'get';
+    description = '随机获得一张提醒';
+    func: CommandFunction<BaseSession, any> = async (session) => {
         axios({
             url: "http://reminder.lolicon.ac.cn/random",
             method: "GET"
-        }).then((res) => {
-            bot.logger.info(`Sent ${res.data} to ${session.user.username}#${session.user.identifyNum} (${session.userId}) in ${session.guildId}/${session.channel.id}`);
-            session.client.API.asset.create(got.stream(`http://reminder.lolicon.ac.cn/image?img=${res.data}`), {
+        }).then(async (res) => {
+            bot.logger.info(`Sent ${res.data} to ${session.author.username}#${session.author.identify_num} (${session.authorId}) in ${session.guildId}/${session.channelId}`);
+            session.client.API.asset.create((await axios.get(`http://reminder.lolicon.ac.cn/image`, { params: { img: res.data }, responseType: 'arraybuffer' })).data, {
                 filename: res.data,
                 contentType: "image/png"
             }).then((res) => {
-                if (session.guild) {
-                    session.client.API.message.create(2, session.channel.id, res.url);
-                } else {
-                    session.client.API.directMessage.create(2, session.userId, undefined, res.url, session.msg.msgId);
-                }
+                bot.API.message.create(MessageType.ImageMessage, session.channelId, res.url);
             }).catch((e) => {
                 bot.logger.error("Uploading image failed");
                 bot.logger.error(e);

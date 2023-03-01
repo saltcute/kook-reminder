@@ -1,19 +1,18 @@
 import { bot } from 'init/client';
-import { AppCommand, AppFunc, BaseSession } from 'kbotify';
+import { BaseCommand, CommandFunction, BaseSession } from 'kasumi.js';
 import * as reminder from './reminderChannelList'
 
-class ReminderRemove extends AppCommand {
-    code = 'remove'; // 只是用作标记
-    trigger = 'remove'; // 用于触发的文字
-    help = '`.reminder remove`'; // 帮助文字
-    intro = '';
-    func: AppFunc<BaseSession> = async (session) => {
-        if (session.guild) {
-            reminder.deleteChannel(session.channel.id);
-            session.reply(`已将频道「${session.channel.name}」(${session.channel.id})从提醒列表中移除`);
-            bot.logger.info(`Removed ${session.channel.id} from reminding list by ${session.user.username}#${session.user.identifyNum} (${session.userId})`);
+class ReminderRemove extends BaseCommand {
+    name = 'remove';
+    description = '将当前频道取消注册';
+    func: CommandFunction<BaseSession, any> = async (session) => {
+        if (session.guildId) {
+            let channel = await bot.API.channel.view(session.channelId);
+            reminder.deleteChannel(channel.id);
+            session.reply(`已将频道「${channel.name}」(${channel.id})从提醒列表中移除`);
+            bot.logger.info(`Removed ${channel.id} from reminding list by ${session.author.username}#${session.author.identify_num} (${session.authorId})`);
         } else {
-            session.client.API.directMessage.create(9, session.userId, undefined, "不能从私聊移除提醒", session.msg.msgId);
+            session.client.API.message.create(9, session.authorId, "不能从私聊移除提醒", session.messageId);
         }
     };
 }

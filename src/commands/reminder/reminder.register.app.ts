@@ -1,19 +1,18 @@
 import { bot } from 'init/client';
-import { AppCommand, AppFunc, BaseSession } from 'kbotify';
+import { BaseCommand, CommandFunction, BaseSession } from 'kasumi.js';
 import * as reminder from './reminderChannelList'
 
-class ReminderRegister extends AppCommand {
-    code = 'register'; // 只是用作标记
-    trigger = 'register'; // 用于触发的文字
-    help = '`.reminder register`'; // 帮助文字
-    intro = '';
-    func: AppFunc<BaseSession> = async (session) => {
-        if (session.guild) {
-            reminder.addChannel(session.channel.id);
-            session.reply(`已添加频道「${session.channel.name}」(${session.channel.id})到提醒列表中`);
-            bot.logger.info(`Added ${session.channel.id} to reminding list by ${session.user.username}#${session.user.identifyNum} (${session.userId})`);
+class ReminderRegister extends BaseCommand {
+    name = 'register';
+    description = '将当前频道注册为提醒频道';
+    func: CommandFunction<BaseSession, any> = async (session) => {
+        if (session.guildId) {
+            let channel = await bot.API.channel.view(session.channelId);
+            reminder.addChannel(channel.id);
+            session.reply(`已添加频道「${channel.name}」(${channel.id})到提醒列表中`);
+            bot.logger.info(`Added ${channel.id} to reminding list by ${session.author.username}#${session.author.identify_num} (${session.authorId})`);
         } else {
-            session.client.API.directMessage.create(9, session.userId, undefined, "不能给私聊添加提醒", session.msg.msgId);
+            session.client.API.message.create(9, session.authorId, "不能给私聊添加提醒", session.messageId);
         }
     };
 }

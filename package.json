@@ -4,7 +4,8 @@
   "description": "提醒○○小助手",
   "main": "src/index.ts",
   "scripts": {
-    "start": "node --nolazy -r ts-node/register -r tsconfig-paths/register src/index.ts"
+    "start": "node --nolazy -r ts-node/register -r tsconfig-paths/register src/index.ts",
+    "pm2": "pm2 start src/pm2-windows.js --name='kook-reminder'"
   },
   "repository": {
     "type": "git",
@@ -26,9 +27,9 @@
     "@types/node-schedule": "^2.1.0",
     "axios": "^0.27.2",
     "got": "^11.8.5",
+    "kasumi.js": "^0.1.8",
     "kbotify": "^0.2.5",
     "node-schedule": "^2.1.0",
-    "ts-config": "^20.10.0",
     "ts-node": "^10.9.1",
     "upath": "^2.0.1"
   },

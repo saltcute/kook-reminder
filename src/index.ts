@@ -6,21 +6,15 @@ import got from 'got';
 import * as reminder from './commands/reminder/reminderChannelList'
 import auth from 'configs/auth';
 
-bot.logger.addStream({
-    name: "kook-reminder",
-    level: 30,
-    stream: process.stdout
-})
-
 reminder.loadChannelList();
 schedule.scheduleJob("0 * * * *", () => {
     axios({
         url: "http://reminder.lolicon.ac.cn/hourly",
         method: "GET"
-    }).then((res) => {
+    }).then(async (res) => {
         bot.logger.info(`Hourly reminder: ${res.data}`)
-        const stream = got.stream(`http://reminder.lolicon.ac.cn/image?img=${res.data}`);
-        bot.API.asset.create(stream, {
+        const buffer = (await axios.get(`http://reminder.lolicon.ac.cn/image`, { params: { img: res.data }, responseType: 'arraybuffer' })).data;
+        bot.API.asset.create(buffer, {
             filename: res.data,
             contentType: "image/png"
         }).then((res) => {
@@ -46,7 +40,7 @@ schedule.scheduleJob("0 * * * *", () => {
     })
 })
 
-bot.addCommands(reminder_menu);
+bot.plugin.load(reminder_menu);
 
 bot.connect();
 
