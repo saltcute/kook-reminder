@@ -19,7 +19,7 @@ schedule.scheduleJob("0 * * * *", () => {
             contentType: "image/png"
         }).then((res) => {
             reminder.channelList.forEach((val, key) => {
-                if (val) {
+                if (val && res?.url) {
                     bot.API.message.create(2, key, res.url).catch((e) => {
                         bot.logger.error(`Sending hourly image to ${key} failed`);
                         bot.logger.error(e);

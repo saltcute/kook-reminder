@@ -15,7 +15,7 @@ class ReminderGet extends BaseCommand {
                 filename: res.data,
                 contentType: "image/png"
             }).then((res) => {
-                bot.API.message.create(MessageType.ImageMessage, session.channelId, res.url);
+                if (res) bot.API.message.create(MessageType.ImageMessage, session.channelId, res.url);
             }).catch((e) => {
                 bot.logger.error("Uploading image failed");
                 bot.logger.error(e);

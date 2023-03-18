@@ -8,9 +8,11 @@ class ReminderRemove extends BaseCommand {
     func: CommandFunction<BaseSession, any> = async (session) => {
         if (session.guildId) {
             let channel = await bot.API.channel.view(session.channelId);
-            reminder.deleteChannel(channel.id);
-            session.reply(`已将频道「${channel.name}」(${channel.id})从提醒列表中移除`);
-            bot.logger.info(`Removed ${channel.id} from reminding list by ${session.author.username}#${session.author.identify_num} (${session.authorId})`);
+            if (channel) {
+                reminder.deleteChannel(channel.id);
+                session.reply(`已将频道「${channel.name}」(${channel.id})从提醒列表中移除`);
+                bot.logger.info(`Removed ${channel.id} from reminding list by ${session.author.username}#${session.author.identify_num} (${session.authorId})`);
+            }
         } else {
             session.client.API.message.create(9, session.authorId, "不能从私聊移除提醒", session.messageId);
         }
