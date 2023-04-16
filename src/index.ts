@@ -17,10 +17,11 @@ schedule.scheduleJob("0 * * * *", () => {
         bot.API.asset.create(buffer, {
             filename: res.data,
             contentType: "image/png"
-        }).then((res) => {
+        }).then(({ err, data }) => {
+            if (err) return bot.logger.error(err);
             reminder.channelList.forEach((val, key) => {
-                if (val && res?.url) {
-                    bot.API.message.create(2, key, res.url).catch((e) => {
+                if (val) {
+                    bot.API.message.create(2, key, data.url).catch((e) => {
                         bot.logger.error(`Sending hourly image to ${key} failed`);
                         bot.logger.error(e);
                         bot.logger.error(e.message)

@@ -7,7 +7,8 @@ class ReminderRegister extends BaseCommand {
     description = '将当前频道注册为提醒频道';
     func: CommandFunction<BaseSession, any> = async (session) => {
         if (session.guildId) {
-            let channel = await bot.API.channel.view(session.channelId);
+            const { err, data: channel } = await bot.API.channel.view(session.channelId);
+            if (err) return this.logger.error(err);
             if (channel) {
                 reminder.addChannel(channel.id);
                 session.reply(`已添加频道「${channel.name}」(${channel.id})到提醒列表中`);

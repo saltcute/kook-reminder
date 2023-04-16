@@ -14,8 +14,9 @@ class ReminderGet extends BaseCommand {
             session.client.API.asset.create((await axios.get(`http://reminder.lolicon.ac.cn/image`, { params: { img: res.data }, responseType: 'arraybuffer' })).data, {
                 filename: res.data,
                 contentType: "image/png"
-            }).then((res) => {
-                if (res) bot.API.message.create(MessageType.ImageMessage, session.channelId, res.url);
+            }).then(({ err, data }) => {
+                if (err) return this.logger.error(err);
+                if (data) bot.API.message.create(MessageType.ImageMessage, session.channelId, data.url);
             }).catch((e) => {
                 bot.logger.error("Uploading image failed");
                 bot.logger.error(e);

@@ -7,7 +7,8 @@ class ReminderRemove extends BaseCommand {
     description = '将当前频道取消注册';
     func: CommandFunction<BaseSession, any> = async (session) => {
         if (session.guildId) {
-            let channel = await bot.API.channel.view(session.channelId);
+            const { err, data: channel } = await bot.API.channel.view(session.channelId);
+            if (err) return this.logger.error(err);
             if (channel) {
                 reminder.deleteChannel(channel.id);
                 session.reply(`已将频道「${channel.name}」(${channel.id})从提醒列表中移除`);
